@@ -6,10 +6,10 @@ criteria pass locally or in CI.
 ## Phase 0 — Foundation
 
 - [x] Establish the Fleet-OS name and `fleetos.v1` technical namespace.
-- [ ] Scaffold repository tooling, contracts, lite backend, and robot agent.
-- [ ] Publish Protobuf telemetry from three lite robots to Compose-local EMQX at 5 Hz.
-- [ ] Pass contract lint, Python lint/type checks, unit tests, and the lite integration test.
-- [ ] Record ADRs 0001–0003.
+- [x] Scaffold repository tooling, contracts, lite backend, and robot agent.
+- [x] Publish Protobuf telemetry from three lite robots to Compose-local EMQX at 5 Hz.
+- [x] Pass contract lint, Python lint/type checks, unit tests, and the lite integration test.
+- [x] Record ADRs 0001–0003.
 
 ## Phase 1 — Telemetry platform
 
