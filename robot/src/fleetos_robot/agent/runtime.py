@@ -80,7 +80,11 @@ class FleetAgent:
             try:
                 await self._publisher.publish(topic, message.SerializeToString())
             except PublishError as error:
-                LOGGER.warning("telemetry_publish_failed", robot_id=robot.robot_id, error=str(error))
+                LOGGER.warning(
+                    "telemetry_publish_failed",
+                    robot_id=robot.robot_id,
+                    error=str(error),
+                )
 
     async def run(self, stop_event: asyncio.Event) -> None:
         """Publish at the configured rate until shutdown is requested."""
@@ -100,4 +104,3 @@ class FleetAgent:
         finally:
             await self._publisher.stop()
             LOGGER.info("fleet_agent_stopped")
-
