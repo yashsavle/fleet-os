@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Protobuf contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Check formatting
+        run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2 format --diff --exit-code
+      - name: Lint contracts
+        run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2 lint
+      - name: Check generated Python bindings
+        run: |
+          make proto
+          git diff --exit-code -- gen/python
+      - name: Check backward compatibility
+        if: github.event_name == 'pull_request'
+        run: |
+          if git cat-file -e origin/main:proto/fleetos/v1/common.proto 2>/dev/null; then
+            docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2 breaking --against '.git#branch=origin/main'
+          else
+            echo "No contract baseline exists on main yet; skipping breaking check."
+          fi
+
+  python:
+    name: Python quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Build test image
+        run: make test-image
+      - name: Ruff
+        run: docker run --rm fleetos-robot-agent:test python -m ruff check robot tests
+      - name: Mypy
+        run: docker run --rm fleetos-robot-agent:test python -m mypy robot/src tests/unit
+      - name: Unit tests
+        run: docker run --rm fleetos-robot-agent:test python -m pytest tests/unit --cov=fleetos_robot --cov-branch --cov-fail-under=80
+
+  integration-lite:
+    name: Three-robot integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Run lite integration
+        run: make integration-lite
+      - name: Upload failure logs
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: integration-logs
+          path: integration.log
+          if-no-files-found: ignore
+          retention-days: 7
+
