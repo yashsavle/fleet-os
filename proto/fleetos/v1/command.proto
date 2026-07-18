@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package fleetos.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1";
+
+// VelocityCommand requests a planar linear and angular velocity.
+message VelocityCommand {
+  // linear_mps is requested forward velocity in meters per second.
+  double linear_mps = 1;
+  // angular_rps is requested angular velocity in radians per second.
+  double angular_rps = 2;
+}
+
+// StopCommand requests an immediate controlled stop.
+message StopCommand {}
+
+// RobotCommand carries one typed command addressed to a robot.
+message RobotCommand {
+  // command_id uniquely identifies the command for idempotent handling.
+  string command_id = 1;
+  // robot_id identifies the robot that must execute the command.
+  string robot_id = 2;
+  // issued_at records when the control plane created the command.
+  google.protobuf.Timestamp issued_at = 3;
+  // payload contains the single action requested by this command.
+  oneof payload {
+    // velocity requests planar motion.
+    VelocityCommand velocity = 4;
+    // stop requests a controlled stop.
+    StopCommand stop = 5;
+  }
+}
+

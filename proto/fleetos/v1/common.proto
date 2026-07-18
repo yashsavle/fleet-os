@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package fleetos.v1;
+
+option go_package = "github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1";
+
+// RobotOperatingState describes the robot's current high-level activity.
+enum RobotOperatingState {
+  // ROBOT_OPERATING_STATE_UNSPECIFIED indicates an unknown or missing state.
+  ROBOT_OPERATING_STATE_UNSPECIFIED = 0;
+  // ROBOT_OPERATING_STATE_IDLE indicates that the robot is ready for work.
+  ROBOT_OPERATING_STATE_IDLE = 1;
+  // ROBOT_OPERATING_STATE_MOVING indicates that the robot is executing motion.
+  ROBOT_OPERATING_STATE_MOVING = 2;
+  // ROBOT_OPERATING_STATE_FAULT indicates that an active fault prevents normal work.
+  ROBOT_OPERATING_STATE_FAULT = 3;
+  // ROBOT_OPERATING_STATE_OFFLINE indicates that the robot is intentionally unavailable.
+  ROBOT_OPERATING_STATE_OFFLINE = 4;
+}
+
+// Pose2D represents a planar position and heading in an odometry frame.
+message Pose2D {
+  // x_m is the x coordinate in meters.
+  double x_m = 1;
+  // y_m is the y coordinate in meters.
+  double y_m = 2;
+  // heading_rad is the normalized heading in radians.
+  double heading_rad = 3;
+}
+
+// Twist2D represents planar linear and angular velocity.
+message Twist2D {
+  // linear_mps is forward velocity in meters per second.
+  double linear_mps = 1;
+  // angular_rps is angular velocity in radians per second.
+  double angular_rps = 2;
+}
+
+// Fault describes one active robot fault.
+message Fault {
+  // code is a stable machine-readable fault identifier.
+  string code = 1;
+  // message is a concise human-readable explanation.
+  string message = 2;
+}
+
