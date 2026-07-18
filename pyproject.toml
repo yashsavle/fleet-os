@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools==75.8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fleetos-robot"
+version = "0.1.0"
+description = "Fleet-OS lite robot backend and MQTT edge agent"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "paho-mqtt==2.1.0",
+  "protobuf==5.29.3",
+  "pydantic==2.10.6",
+  "structlog==25.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy==1.14.1",
+  "pytest==8.3.4",
+  "pytest-asyncio==0.25.3",
+  "pytest-cov==6.0.0",
+  "ruff==0.9.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["robot/src", "gen/python"]
+namespaces = true
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-config --strict-markers"
+asyncio_mode = "auto"
+pythonpath = ["robot/src", "gen/python"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = ["robot/src", "gen/python"]
+exclude = ["gen/python"]
+
+[[tool.mypy.overrides]]
+module = ["fleetos.v1.*"]
+ignore_missing_imports = true
+
