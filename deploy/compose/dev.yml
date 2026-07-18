@@ -1,0 +1,51 @@
+name: fleetos-dev
+
+services:
+  emqx:
+    image: emqx/emqx:5.8.4
+    environment:
+      EMQX_NODE__NAME: emqx@127.0.0.1
+      EMQX_DASHBOARD__DEFAULT_PASSWORD: fleetos-local-only
+    ports:
+      - "127.0.0.1:1883:1883"
+      - "127.0.0.1:18083:18083"
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx", "ctl", "status"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  robot-agent:
+    build:
+      context: ../..
+      dockerfile: robot/agent/Dockerfile
+      target: runtime
+    environment:
+      BACKEND: lite
+      FLEET_SIZE: "${FLEET_SIZE:-3}"
+      MQTT_HOST: emqx
+      MQTT_PORT: "1883"
+      PUBLISH_HZ: "${PUBLISH_HZ:-5}"
+    depends_on:
+      emqx:
+        condition: service_healthy
+    init: true
+    restart: unless-stopped
+
+  telemetry-probe:
+    profiles: ["test"]
+    build:
+      context: ../..
+      dockerfile: robot/agent/Dockerfile
+      target: test
+    command: ["python", "tests/integration/assert_telemetry.py"]
+    environment:
+      EXPECTED_FLEET_SIZE: "${FLEET_SIZE:-3}"
+      MQTT_HOST: emqx
+      MQTT_PORT: "1883"
+    depends_on:
+      emqx:
+        condition: service_healthy
+
