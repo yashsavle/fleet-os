@@ -8,7 +8,27 @@ deployments, and an AI diagnostics copilot, all deployed on Kubernetes with full
 > v1 proved the concept: 6 AGVs in simulation with a live dashboard and LLM fault diagnosis.
 > v2 re-architects it into the kind of platform that operates real robot fleets in production.
 
-**Status:** Phase 0 in progress. See [Roadmap](#roadmap-and-phases).
+**Status:** Phase 0 telemetry foundation complete. See [Roadmap](#roadmap-and-phases).
+
+## Phase 0 quick start
+
+Prerequisite: Docker Desktop with Compose v2. The development path is containerized, so a
+host Python, Go, or Buf installation is not required.
+
+```bash
+# Run contract lint, Python lint/type checks, unit tests, and the live MQTT integration.
+make lint test integration-lite
+
+# Start EMQX and three lite robots publishing Protobuf telemetry at 5 Hz.
+make dev
+
+# Stop the local stack and remove its containers.
+make down
+```
+
+The development broker binds MQTT to `127.0.0.1:1883` and the EMQX dashboard to
+`http://127.0.0.1:18083`. Anonymous plaintext MQTT is a local-only convenience. Cloud
+deployments require TLS and authenticated robot identities.
 
 ---
 
