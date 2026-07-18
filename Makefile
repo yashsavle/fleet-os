@@ -7,7 +7,7 @@ TEST_IMAGE := fleetos-robot-agent:test
 .PHONY: proto lint test integration-lite dev down test-image
 
 proto:
-	docker run --rm --user "$$(id -u):$$(id -g)" -v "$(CURDIR):/workspace" -w /workspace $(BUF_IMAGE) generate
+	docker run --rm --user "$$(id -u):$$(id -g)" -e BUF_CACHE_DIR=/tmp/buf-cache -v "$(CURDIR):/workspace" -w /workspace $(BUF_IMAGE) generate
 
 test-image:
 	docker build --target test -t $(TEST_IMAGE) -f robot/agent/Dockerfile .
