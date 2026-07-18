@@ -7,6 +7,7 @@ from typing import Any, Protocol
 
 import paho.mqtt.client as mqtt
 import structlog
+from paho.mqtt.enums import CallbackAPIVersion
 
 from fleetos_robot.agent.config import AgentSettings
 
@@ -38,7 +39,7 @@ class MqttTelemetryPublisher:
         self._settings = settings
         self._connected = threading.Event()
         self._client = mqtt.Client(
-            callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
+            callback_api_version=CallbackAPIVersion.VERSION2,
             client_id=client_id,
             protocol=mqtt.MQTTv5,
         )
@@ -73,22 +74,20 @@ class MqttTelemetryPublisher:
 
     async def start(self) -> None:
         """Start Paho's reconnecting network loop and await the first connection."""
-        result = self._client.connect_async(
+        self._client.connect_async(
             self._settings.mqtt_host,
             self._settings.mqtt_port,
             self._settings.mqtt_keepalive_s,
         )
-        if result != mqtt.MQTT_ERR_SUCCESS:
-            raise PublishError(f"MQTT connect request failed with code {result}")
         self._client.loop_start()
-        try:
-            await asyncio.wait_for(
-                asyncio.to_thread(self._connected.wait),
-                timeout=self._settings.mqtt_connect_timeout_s,
-            )
-        except TimeoutError as error:
-            await asyncio.to_thread(self._client.loop_stop)
-            raise PublishError("MQTT connection did not become ready") from error
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + self._settings.mqtt_connect_timeout_s
+        while not self._connected.is_set():
+            remaining_s = deadline - loop.time()
+            if remaining_s <= 0.0:
+                await asyncio.to_thread(self._client.loop_stop)
+                raise PublishError("MQTT connection did not become ready")
+            await asyncio.sleep(min(0.05, remaining_s))
 
     async def publish(self, topic: str, payload: bytes) -> None:
         """Queue a non-retained QoS 1 telemetry message."""
