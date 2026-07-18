@@ -1,6 +1,6 @@
 version: v2
 plugins:
-  - protoc_builtin: python
+  - remote: buf.build/protocolbuffers/python:v29.3
     out: gen/python
-  - protoc_builtin: pyi
+  - remote: buf.build/protocolbuffers/pyi:v29.3
     out: gen/python
