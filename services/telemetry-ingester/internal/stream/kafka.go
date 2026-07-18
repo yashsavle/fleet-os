@@ -21,7 +21,7 @@ func NewKafkaProducer(brokers []string, topic string, readiness *health.Readines
 		kgo.SeedBrokers(brokers...),
 		kgo.DefaultProduceTopic(topic),
 		kgo.RequiredAcks(kgo.AllISRAcks()),
-		kgo.ProducerBatchCompression(kgo.SnappyCompression()),
+		kgo.ProducerBatchCompression(kgo.NoCompression()),
 	)
 	if err != nil {
 		return nil, err
