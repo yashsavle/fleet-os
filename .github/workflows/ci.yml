@@ -26,15 +26,15 @@ jobs:
         run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d format --diff --exit-code
       - name: Lint contracts
         run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d lint
-      - name: Check generated Python bindings
+      - name: Check generated bindings
         run: |
           make proto
-          git diff --exit-code -- gen/python
+          git diff --exit-code -- gen/python gen/go
       - name: Check backward compatibility
         if: github.event_name == 'pull_request'
         run: |
           if git cat-file -e origin/main:proto/fleetos/v1/common.proto 2>/dev/null; then
-            docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d breaking --against '.git#branch=origin/main'
+            docker run --rm --user "$(id -u):$(id -g)" -e BUF_CACHE_DIR=/tmp/buf-cache -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d breaking --against '.git#branch=origin/main'
           else
             echo "No contract baseline exists on main yet; skipping breaking check."
           fi
@@ -54,6 +54,18 @@ jobs:
         run: docker run --rm fleetos-robot-agent:test python -m mypy robot/src tests/unit
       - name: Unit tests
         run: docker run --rm fleetos-robot-agent:test python -m pytest tests/unit --cov=fleetos_robot --cov-branch --cov-fail-under=80
+
+  go:
+    name: Go quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Lint telemetry ingester
+        run: make go-lint
+      - name: Test telemetry ingester
+        run: make go-test
 
   integration-lite:
     name: Three-robot integration

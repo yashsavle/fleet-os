@@ -17,6 +17,65 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.3.5@sha256:8b2802411074676c96a81eb65483b29e63a212673023869e91fd41d728aaa278
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=512M
+      - --reserve-memory=0M
+      - --node-id=0
+      - --check=false
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr=internal://redpanda:9092,external://127.0.0.1:19092
+    ports:
+      - "127.0.0.1:19092:19092"
+    healthcheck:
+      test: ["CMD", "rpk", "cluster", "health", "--exit-when-healthy"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+
+  redpanda-init:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.3.5@sha256:8b2802411074676c96a81eb65483b29e63a212673023869e91fd41d728aaa278
+    command:
+      - topic
+      - create
+      - fleetos.telemetry.v1
+      - -X
+      - brokers=redpanda:9092
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    restart: "no"
+
+  telemetry-ingester:
+    build:
+      context: ../..
+      dockerfile: services/telemetry-ingester/Dockerfile
+    environment:
+      HTTP_ADDRESS: ":8080"
+      KAFKA_BROKERS: redpanda:9092
+      KAFKA_TOPIC: fleetos.telemetry.v1
+      MQTT_CLIENT_ID: fleetos-telemetry-ingester-dev
+      MQTT_TOPIC: fleetos/v1/robots/+/telemetry
+      MQTT_URL: tcp://emqx:1883
+    ports:
+      - "127.0.0.1:18080:8080"
+    depends_on:
+      emqx:
+        condition: service_healthy
+      redpanda:
+        condition: service_healthy
+      redpanda-init:
+        condition: service_completed_successfully
+    init: true
+    restart: unless-stopped
+
   robot-agent:
     build:
       context: ../..
@@ -47,4 +106,19 @@ services:
       MQTT_PORT: "1883"
     depends_on:
       emqx:
+        condition: service_healthy
+
+  redpanda-probe:
+    profiles: ["test"]
+    build:
+      context: ../..
+      dockerfile: robot/agent/Dockerfile
+      target: test
+    command: ["python", "tests/integration/assert_redpanda.py"]
+    environment:
+      EXPECTED_FLEET_SIZE: "${FLEET_SIZE:-3}"
+      KAFKA_BROKERS: redpanda:9092
+      KAFKA_TOPIC: fleetos.telemetry.v1
+    depends_on:
+      redpanda:
         condition: service_healthy
