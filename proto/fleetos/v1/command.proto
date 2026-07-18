@@ -33,4 +33,3 @@ message RobotCommand {
     StopCommand stop = 5;
   }
 }
-

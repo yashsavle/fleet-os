@@ -2,9 +2,5 @@ version: v2
 plugins:
   - protoc_builtin: python
     out: gen/python
-    opt:
-      - paths=source_relative
   - protoc_builtin: pyi
     out: gen/python
-    opt:
-      - paths=source_relative

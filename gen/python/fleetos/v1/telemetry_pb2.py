@@ -26,7 +26,7 @@ from fleetos.v1 import common_pb2 as fleetos_dot_v1_dot_common__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1a\x66leetos/v1/telemetry.proto\x12\nfleetos.v1\x1a\x17\x66leetos/v1/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa1\x02\n\x0eRobotTelemetry\x12\x10\n\x08robot_id\x18\x01 \x01(\t\x12\x10\n\x08sequence\x18\x02 \x01(\x04\x12/\n\x0bobserved_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12 \n\x04pose\x18\x04 \x01(\x0b\x32\x12.fleetos.v1.Pose2D\x12%\n\x08velocity\x18\x05 \x01(\x0b\x32\x13.fleetos.v1.Twist2D\x12\x17\n\x0f\x62\x61ttery_percent\x18\x06 \x01(\x02\x12.\n\x05state\x18\x07 \x01(\x0e\x32\x1f.fleetos.v1.RobotOperatingState\x12(\n\ractive_faults\x18\x08 \x03(\x0b\x32\x11.fleetos.v1.FaultB;Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1a\x66leetos/v1/telemetry.proto\x12\nfleetos.v1\x1a\x17\x66leetos/v1/common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf5\x02\n\x0eRobotTelemetry\x12\x19\n\x08robot_id\x18\x01 \x01(\tR\x07robotId\x12\x1a\n\x08sequence\x18\x02 \x01(\x04R\x08sequence\x12;\n\x0bobserved_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\nobservedAt\x12&\n\x04pose\x18\x04 \x01(\x0b\x32\x12.fleetos.v1.Pose2DR\x04pose\x12/\n\x08velocity\x18\x05 \x01(\x0b\x32\x13.fleetos.v1.Twist2DR\x08velocity\x12\'\n\x0f\x62\x61ttery_percent\x18\x06 \x01(\x02R\x0e\x62\x61tteryPercent\x12\x35\n\x05state\x18\x07 \x01(\x0e\x32\x1f.fleetos.v1.RobotOperatingStateR\x05state\x12\x36\n\ractive_faults\x18\x08 \x03(\x0b\x32\x11.fleetos.v1.FaultR\x0c\x61\x63tiveFaultsB;Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -35,5 +35,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1'
   _globals['_ROBOTTELEMETRY']._serialized_start=101
-  _globals['_ROBOTTELEMETRY']._serialized_end=390
+  _globals['_ROBOTTELEMETRY']._serialized_end=474
 # @@protoc_insertion_point(module_scope)

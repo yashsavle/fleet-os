@@ -43,4 +43,3 @@ message Fault {
   // message is a concise human-readable explanation.
   string message = 2;
 }
-

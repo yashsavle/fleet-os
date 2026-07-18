@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17\x66leetos/v1/common.proto\x12\nfleetos.v1\"7\n\x06Pose2D\x12\x0b\n\x03x_m\x18\x01 \x01(\x01\x12\x0b\n\x03y_m\x18\x02 \x01(\x01\x12\x13\n\x0bheading_rad\x18\x03 \x01(\x01\"2\n\x07Twist2D\x12\x12\n\nlinear_mps\x18\x01 \x01(\x01\x12\x13\n\x0b\x61ngular_rps\x18\x02 \x01(\x01\"&\n\x05\x46\x61ult\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t*\xc2\x01\n\x13RobotOperatingState\x12%\n!ROBOT_OPERATING_STATE_UNSPECIFIED\x10\x00\x12\x1e\n\x1aROBOT_OPERATING_STATE_IDLE\x10\x01\x12 \n\x1cROBOT_OPERATING_STATE_MOVING\x10\x02\x12\x1f\n\x1bROBOT_OPERATING_STATE_FAULT\x10\x03\x12!\n\x1dROBOT_OPERATING_STATE_OFFLINE\x10\x04\x42;Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17\x66leetos/v1/common.proto\x12\nfleetos.v1\"K\n\x06Pose2D\x12\x0f\n\x03x_m\x18\x01 \x01(\x01R\x02xM\x12\x0f\n\x03y_m\x18\x02 \x01(\x01R\x02yM\x12\x1f\n\x0bheading_rad\x18\x03 \x01(\x01R\nheadingRad\"I\n\x07Twist2D\x12\x1d\n\nlinear_mps\x18\x01 \x01(\x01R\tlinearMps\x12\x1f\n\x0b\x61ngular_rps\x18\x02 \x01(\x01R\nangularRps\"5\n\x05\x46\x61ult\x12\x12\n\x04\x63ode\x18\x01 \x01(\tR\x04\x63ode\x12\x18\n\x07message\x18\x02 \x01(\tR\x07message*\xc2\x01\n\x13RobotOperatingState\x12%\n!ROBOT_OPERATING_STATE_UNSPECIFIED\x10\x00\x12\x1e\n\x1aROBOT_OPERATING_STATE_IDLE\x10\x01\x12 \n\x1cROBOT_OPERATING_STATE_MOVING\x10\x02\x12\x1f\n\x1bROBOT_OPERATING_STATE_FAULT\x10\x03\x12!\n\x1dROBOT_OPERATING_STATE_OFFLINE\x10\x04\x42;Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,12 +32,12 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'fleetos.v1.common_pb2', _gl
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1'
-  _globals['_ROBOTOPERATINGSTATE']._serialized_start=189
-  _globals['_ROBOTOPERATINGSTATE']._serialized_end=383
+  _globals['_ROBOTOPERATINGSTATE']._serialized_start=247
+  _globals['_ROBOTOPERATINGSTATE']._serialized_end=441
   _globals['_POSE2D']._serialized_start=39
-  _globals['_POSE2D']._serialized_end=94
-  _globals['_TWIST2D']._serialized_start=96
-  _globals['_TWIST2D']._serialized_end=146
-  _globals['_FAULT']._serialized_start=148
-  _globals['_FAULT']._serialized_end=186
+  _globals['_POSE2D']._serialized_end=114
+  _globals['_TWIST2D']._serialized_start=116
+  _globals['_TWIST2D']._serialized_end=189
+  _globals['_FAULT']._serialized_start=191
+  _globals['_FAULT']._serialized_end=244
 # @@protoc_insertion_point(module_scope)
