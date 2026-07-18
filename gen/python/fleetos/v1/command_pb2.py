@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18\x66leetos/v1/command.proto\x12\nfleetos.v1\x1a\x1fgoogle/protobuf/timestamp.proto\":\n\x0fVelocityCommand\x12\x12\n\nlinear_mps\x18\x01 \x01(\x01\x12\x13\n\x0b\x61ngular_rps\x18\x02 \x01(\x01\"\r\n\x0bStopCommand\"\xc8\x01\n\x0cRobotCommand\x12\x12\n\ncommand_id\x18\x01 \x01(\t\x12\x10\n\x08robot_id\x18\x02 \x01(\t\x12-\n\tissued_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x08velocity\x18\x04 \x01(\x0b\x32\x1b.fleetos.v1.VelocityCommandH\x00\x12\'\n\x04stop\x18\x05 \x01(\x0b\x32\x17.fleetos.v1.StopCommandH\x00\x42\t\n\x07payloadB;Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18\x66leetos/v1/command.proto\x12\nfleetos.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"Q\n\x0fVelocityCommand\x12\x1d\n\nlinear_mps\x18\x01 \x01(\x01R\tlinearMps\x12\x1f\n\x0b\x61ngular_rps\x18\x02 \x01(\x01R\nangularRps\"\r\n\x0bStopCommand\"\xf6\x01\n\x0cRobotCommand\x12\x1d\n\ncommand_id\x18\x01 \x01(\tR\tcommandId\x12\x19\n\x08robot_id\x18\x02 \x01(\tR\x07robotId\x12\x37\n\tissued_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x08issuedAt\x12\x39\n\x08velocity\x18\x04 \x01(\x0b\x32\x1b.fleetos.v1.VelocityCommandH\x00R\x08velocity\x12-\n\x04stop\x18\x05 \x01(\x0b\x32\x17.fleetos.v1.StopCommandH\x00R\x04stopB\t\n\x07payloadB;Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,9 +34,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z9github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1'
   _globals['_VELOCITYCOMMAND']._serialized_start=73
-  _globals['_VELOCITYCOMMAND']._serialized_end=131
-  _globals['_STOPCOMMAND']._serialized_start=133
-  _globals['_STOPCOMMAND']._serialized_end=146
-  _globals['_ROBOTCOMMAND']._serialized_start=149
-  _globals['_ROBOTCOMMAND']._serialized_end=349
+  _globals['_VELOCITYCOMMAND']._serialized_end=154
+  _globals['_STOPCOMMAND']._serialized_start=156
+  _globals['_STOPCOMMAND']._serialized_end=169
+  _globals['_ROBOTCOMMAND']._serialized_start=172
+  _globals['_ROBOTCOMMAND']._serialized_end=418
 # @@protoc_insertion_point(module_scope)

@@ -26,4 +26,3 @@ message RobotTelemetry {
   // active_faults lists faults that are active for this observation.
   repeated Fault active_faults = 8;
 }
-
