@@ -13,7 +13,7 @@ criteria pass locally or in CI.
 
 ## Phase 1 — Telemetry platform
 
-- [ ] Ingest MQTT telemetry into Redpanda.
+- [x] Ingest MQTT telemetry into Redpanda.
 - [ ] Persist telemetry and fleet-state views in ClickHouse.
 - [ ] Add Prometheus metrics, Grafana dashboards, and a documented load test.
 
