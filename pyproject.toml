@@ -21,6 +21,7 @@ dev = [
   "pytest-asyncio==0.25.3",
   "pytest-cov==6.0.0",
   "ruff==0.9.4",
+  "types-protobuf==5.29.1.20250403",
 ]
 
 [tool.setuptools.packages.find]
@@ -30,23 +31,34 @@ namespaces = true
 [tool.pytest.ini_options]
 addopts = "-ra --strict-config --strict-markers"
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+cache_dir = "/tmp/fleetos-pytest-cache"
 pythonpath = ["robot/src", "gen/python"]
 testpaths = ["tests"]
 
 [tool.ruff]
 target-version = "py311"
 line-length = 100
+cache-dir = "/tmp/fleetos-ruff-cache"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "ASYNC", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["fleetos", "fleetos_robot"]
 
 [tool.mypy]
 python_version = "3.11"
 strict = true
 mypy_path = ["robot/src", "gen/python"]
 exclude = ["gen/python"]
+cache_dir = "/tmp/fleetos-mypy-cache"
 
 [[tool.mypy.overrides]]
 module = ["fleetos.v1.*"]
 ignore_missing_imports = true
+ignore_errors = true
 
+[tool.coverage.run]
+data_file = "/tmp/fleetos-coverage"
+omit = ["robot/src/fleetos_robot/agent/main.py"]

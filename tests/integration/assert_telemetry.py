@@ -5,9 +5,11 @@ import statistics
 import threading
 import time
 from collections import defaultdict
+from itertools import pairwise
 from typing import Any
 
 import paho.mqtt.client as mqtt
+from paho.mqtt.enums import CallbackAPIVersion
 
 from fleetos.v1 import telemetry_pb2
 
@@ -56,12 +58,12 @@ def main() -> None:
                 and all(len(items) >= MIN_MESSAGES_PER_ROBOT for items in observations.values())
             ):
                 complete.set()
-        except Exception as error:  # noqa: BLE001 - surface malformed wire data in the probe
+        except Exception as error:
             failures.append(f"protobuf decode failed: {error}")
             complete.set()
 
     client = mqtt.Client(
-        callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
+        callback_api_version=CallbackAPIVersion.VERSION2,
         client_id=f"fleetos-integration-{time.time_ns()}",
         protocol=mqtt.MQTTv5,
     )
@@ -84,7 +86,7 @@ def main() -> None:
             sequences = [sequence for _, sequence in items]
             if sequences != sorted(sequences) or len(set(sequences)) != len(sequences):
                 raise AssertionError(f"non-increasing sequence for {robot_id}: {sequences}")
-            intervals = [current[0] - previous[0] for previous, current in zip(items, items[1:])]
+            intervals = [current[0] - previous[0] for previous, current in pairwise(items)]
             median_interval = statistics.median(intervals)
             if not 0.1 <= median_interval <= 0.4:
                 raise AssertionError(
