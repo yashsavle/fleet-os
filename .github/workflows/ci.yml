@@ -34,7 +34,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           if git cat-file -e origin/main:proto/fleetos/v1/common.proto 2>/dev/null; then
-            docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d breaking --against '.git#branch=origin/main'
+            docker run --rm --user "$(id -u):$(id -g)" -e BUF_CACHE_DIR=/tmp/buf-cache -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d breaking --against '.git#branch=origin/main'
           else
             echo "No contract baseline exists on main yet; skipping breaking check."
           fi
