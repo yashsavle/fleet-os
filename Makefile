@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 
-BUF_IMAGE := bufbuild/buf:1.47.2
+BUF_IMAGE := bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d
 COMPOSE_FILE := deploy/compose/dev.yml
 TEST_IMAGE := fleetos-robot-agent:test
 

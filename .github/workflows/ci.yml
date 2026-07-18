@@ -23,9 +23,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check formatting
-        run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2 format --diff --exit-code
+        run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d format --diff --exit-code
       - name: Lint contracts
-        run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2 lint
+        run: docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d lint
       - name: Check generated Python bindings
         run: |
           make proto
@@ -34,7 +34,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           if git cat-file -e origin/main:proto/fleetos/v1/common.proto 2>/dev/null; then
-            docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2 breaking --against '.git#branch=origin/main'
+            docker run --rm -v "$PWD:/workspace" -w /workspace bufbuild/buf:1.47.2@sha256:c14957e613e9b95c4bf462fa73afdee48e13a67b8014ed1f951e5615492d457d breaking --against '.git#branch=origin/main'
           else
             echo "No contract baseline exists on main yet; skipping breaking check."
           fi
@@ -72,4 +72,3 @@ jobs:
           path: integration.log
           if-no-files-found: ignore
           retention-days: 7
-
