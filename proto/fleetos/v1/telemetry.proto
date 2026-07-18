@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package fleetos.v1;
+
+import "fleetos/v1/common.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/yashsavle/fleet-os/gen/go/fleetos/v1;fleetosv1";
+
+// RobotTelemetry is one typed observation published by a robot.
+message RobotTelemetry {
+  // robot_id uniquely identifies the publishing robot.
+  string robot_id = 1;
+  // sequence increases for every observation published by this robot.
+  uint64 sequence = 2;
+  // observed_at records when the observation was produced.
+  google.protobuf.Timestamp observed_at = 3;
+  // pose contains the robot's planar odometry pose.
+  Pose2D pose = 4;
+  // velocity contains the robot's current planar velocity.
+  Twist2D velocity = 5;
+  // battery_percent is clamped to the inclusive range 0 through 100.
+  float battery_percent = 6;
+  // state is the robot's current high-level operating state.
+  RobotOperatingState state = 7;
+  // active_faults lists faults that are active for this observation.
+  repeated Fault active_faults = 8;
+}
+
