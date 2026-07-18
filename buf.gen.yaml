@@ -4,3 +4,7 @@ plugins:
     out: gen/python
   - remote: buf.build/protocolbuffers/pyi:v29.3
     out: gen/python
+  - remote: buf.build/protocolbuffers/go:v1.36.4
+    out: gen/go
+    opt:
+      - paths=source_relative
